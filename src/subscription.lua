@@ -14,7 +14,18 @@ Subscription.__tostring = util.constant('Subscription')
 function Subscription.create(action)
   local self = {
     action = action or util.noop,
-    unsubscribed = false
+    unsubscribed = false,
+  }
+
+  return setmetatable(self, Subscription)
+end
+
+--- Creates a new Subscription that is already unsubscribed.
+-- @returns {@Subscription}
+function Subscription.empty()
+  local self = {
+    action = util.noop,
+    unsubscribed = true,
   }
 
   return setmetatable(self, Subscription)
@@ -23,8 +34,8 @@ end
 --- Unsubscribes the subscription, performing any necessary cleanup work.
 function Subscription:unsubscribe()
   if self.unsubscribed then return end
-  self.action(self)
   self.unsubscribed = true
+  self.action(self)
 end
 
 return Subscription

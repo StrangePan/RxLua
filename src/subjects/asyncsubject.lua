@@ -43,10 +43,10 @@ function AsyncSubject:subscribe(onNext, onError, onCompleted)
   if self.value then
     observer:onNext(util.unpack(self.value))
     observer:onCompleted()
-    return
+    return Subscription.empty()
   elseif self.errorMessage then
     observer:onError(self.errorMessage)
-    return
+    return Subscription.empty()
   end
 
   table.insert(self.observers, observer)
@@ -79,6 +79,8 @@ function AsyncSubject:onError(message)
       self.observers[i]:onError(self.errorMessage)
     end
 
+    self.observers = {}
+
     self.stopped = true
   end
 end
@@ -93,6 +95,8 @@ function AsyncSubject:onCompleted()
 
       self.observers[i]:onCompleted()
     end
+
+    self.observers = {}
 
     self.stopped = true
   end

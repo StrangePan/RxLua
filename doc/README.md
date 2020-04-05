@@ -3,6 +3,7 @@ RxLua
 
 - [Subscription](#subscription)
   - [create](#createaction)
+  - [empty](#empty)
   - [unsubscribe](#unsubscribe)
 - [Observer](#observer)
   - [create](#createonnext-onerror-oncompleted)
@@ -93,6 +94,7 @@ RxLua
   - [onNext](#onnextvalues)
   - [onError](#onerrormessage)
   - [onCompleted](#oncompleted)
+  - [serialize](#serialize)
 - [AsyncSubject](#asyncsubject)
   - [create](#create)
   - [subscribe](#subscribeonnext-onerror-oncompleted)
@@ -103,6 +105,8 @@ RxLua
   - [create](#createvalue)
   - [subscribe](#subscribeonnext-onerror-oncompleted)
   - [onNext](#onnextvalues)
+  - [onError](#onerrormessage)
+  - [onCompleted](#oncompleted)
   - [getValue](#getvalue)
 - [ReplaySubject](#replaysubject)
   - [create](#createbuffersize)
@@ -122,6 +126,12 @@ Creates a new Subscription.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action` | function (optional) |  | The action to run when the subscription is unsubscribed. It will only be run once. |
+
+---
+
+#### `.empty()`
+
+Creates a new Subscription that is already unsubscribed.
 
 ---
 
@@ -866,7 +876,7 @@ Schedules an action to run at a future point in time.
 
 # Subject
 
-Subjects function both as an Observer and as an Observable. Subjects inherit all Observable functions, including subscribe. Values can also be pushed to the Subject, which will be broadcasted to any subscribed Observers.
+Subjects function both as an Observer and as an Observable. Subjects inherit all Observable functions, including subscribe. Values can also be pushed to the Subject, which will be broadcasted to any subscribed Observers. If an observer subscribes after this Subject has already completed or terminated in an error, the observer receives the onComplete() or onError() event immediately and the subscription is cancelled.
 
 ---
 
@@ -911,6 +921,12 @@ Signal to all Observers that an error has occurred.
 #### `:onCompleted()`
 
 Signal to all Observers that the Subject will not produce any more values.
+
+---
+
+#### `:serialize()`
+
+Returns a new Subject that serializes incoming events and processes them in the order received. This is useful for subjects whose subscriptions self-destruct under certain conditions, as is the case with a `takeUntil` or `takeWhile` operator.
 
 # AsyncSubject
 
@@ -995,6 +1011,22 @@ Pushes zero or more values to the BehaviorSubject. They will be broadcasted to a
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `values` | *... |  |  |
+
+---
+
+#### `:onError(message)`
+
+Pushes an error message to all Observers and terminates the subject. Clears the current value causing `getValue()` to return `nil`.
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `message` | string |  |  |
+
+---
+
+#### `:onCompleted()`
+
+Completes the subject and terminates its event stream. Clears the current value, causing `getValue()` to return `nil`.
 
 ---
 
