@@ -4,7 +4,8 @@
 
 local files = {
   'src/util.lua',
-  'src/subscription.lua',
+  'src/subscriptions/subscription.lua',
+  'src/subscriptions/compositesubscription.lua',
   'src/observer.lua',
   'src/observable.lua',
   'src/operators/all.lua',
@@ -91,6 +92,7 @@ exports.homepage = 'https://github.com/bjornbytes/rxlua'
 local footer = [[return {
   util = util,
   Subscription = Subscription,
+  CompositeSubscription = CompositeSubscription,
   Observer = Observer,
   Observable = Observable,
   ImmediateScheduler = ImmediateScheduler,

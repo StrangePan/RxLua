@@ -5,6 +5,10 @@ RxLua
   - [create](#createaction)
   - [empty](#empty)
   - [unsubscribe](#unsubscribe)
+- [CompositeSubscription](#compositesubscription)
+  - [create](#createsubscriptions)
+  - [add](#addsubscriptions)
+  - [unsubscribe](#unsubscribe)
 - [Observer](#observer)
   - [create](#createonnext-onerror-oncompleted)
   - [onNext](#onnextvalues)
@@ -138,6 +142,36 @@ Creates a new Subscription that is already unsubscribed.
 #### `:unsubscribe()`
 
 Unsubscribes the subscription, performing any necessary cleanup work.
+
+# CompositeSubscription
+
+A Subscription that is composed of other subscriptions and can be used to unsubscribe multiple subscriptions at once.
+
+---
+
+#### `.create(subscriptions)`
+
+Creates a new CompositeSubscription. It may be initialized empty or with a set of Subscriptions.
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `subscriptions` | Subscription... |  | A set of subscriptions to initialize the object with. |
+
+---
+
+#### `:add(subscriptions)`
+
+Adds one or more Subscriptions to this CompositeSubscription.
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `subscriptions` | Subscription... |  | The list of Subscriptions to add. |
+
+---
+
+#### `:unsubscribe()`
+
+Unsubscribes all subscriptions that were added to this CompositeSubscription and removes them from this CompositeSubscription.
 
 # Observer
 
